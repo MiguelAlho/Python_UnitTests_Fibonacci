@@ -242,5 +242,23 @@ We've got 100% code coverage meaning every single production code line is hit at
 
 Time to commit!
 
+## Time to Refactor
+
+We've got working code and working tests, but that doesn't mean the jobe is done. We should look into cleaning up and refactoring what we've done. The big advantage is that since we now have tests in place, we can make changes and understand if we've broken something.
+
+### Idiomatic python - method name.
+
+As a C# developer, I'm used to seeing capitilized method names. In Python, seems there is a preference for lowercased names. Let's refactor that. 
+
+In the `fibonacci.py` file, using VScode, place the cursor on the `Nth` method name and hit F2. Rename the method to `nth` (lover-case n).
+
+Since we've made a change (even a simple one with the help of the IDE), let's run the tests to make sure everything is ok.
+
+In my case, because I didn't also save the test file on the refactor, tests failed. Save it, rerun tests, everything now OK.
+
+Commit!
+
+
+
 
 
