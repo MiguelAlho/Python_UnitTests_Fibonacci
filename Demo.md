@@ -114,6 +114,58 @@ tests\test_fibonacci.py .                                                       
 
 Tests are now green! We've got our first test in and one of the conditions - 0th index returns 0 - is implemented (event though it is not the complete solution).
 
+Time to commit!
+
+### Add another test
+
+There is another test condition that is not based on a sum - the value with an index of 1. Let's test and implement that case. In the test file, add a new test method:
+
+```
+def test_nth_fibonacci_for_1_is_1():
+    calculator = FibonacciCalculator()
+    result = calculator.Nth(1)
+    assert result == 1
+```
+
+And run the tests:
+
+```
+=========================================================================================================================== test session starts ===========================================================================================================================
+platform win32 -- Python 3.9.2, pytest-6.2.2, py-1.10.0, pluggy-0.13.1
+rootdir: C:\gh\pyFibonacci
+plugins: cov-2.11.1
+collected 2 items                                                                                                                                                                                                                                                          
+
+tests\test_fibonacci.py .F                                                                                                                                                                                                                                           [100%]
+
+================================================================================================================================ FAILURES =================================================================================================================================
+______________________________________________________________________________________________________________________ test_nth_fibonacci_for_1_is_1 ______________________________________________________________________________________________________________________
+
+    def test_nth_fibonacci_for_1_is_1():
+        calculator = FibonacciCalculator()
+        result = calculator.Nth(1)
+>       assert result == 1
+E       assert 0 == 1
+
+tests\test_fibonacci.py:14: AssertionError
+========================================================================================================================= short test summary info =========================================================================================================================
+FAILED tests/test_fibonacci.py::test_nth_fibonacci_for_1_is_1 - assert 0 == 1
+======================================================================================================================= 1 failed, 1 passed in 0.26s =======================================================================================================================
+```
+
+Of the 2 tests, one is failing, as expected, since we haven't implemented a complete fibonacci, and the current one only covers the 0 index. Let's make this one pass. Modify the implementation using a simple implementation based on ifs:
+
+
+```
+class FibonacciCalculator():
+    def Nth(self, ordinal):
+        if ordinal == 1:
+            return 1
+        return 0
+```
+
+And run the tests again. They now pass! Time for a new commit.
+
 
 
 
