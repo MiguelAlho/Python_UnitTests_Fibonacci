@@ -13,7 +13,7 @@ At this point in time in the overall project, all that has been asked is for thi
 So, you think about the requirement and consider that maybe a class would be useful, with an `Nth()` method that can return the value in the sequence for the index passed in. You're thinking that the single, integer input parameter would suffice, representing the index in the sequence. In this case, the index is to be zero-based. So:
 
 | index | value |
-|-------|-------|
+|------:|------:|
 | 0     | 0     |
 | 1     | 1     |
 | 2     | 1     |
@@ -37,7 +37,7 @@ It seems the easiest way to get started is to pick the first value pair on the t
 
 With the file created, let's fill it in with the minimum we can use, defining our first test:
 
-```
+```python
 def test_nth_fibonacci_for_0_is_0():
     #arrange
     calculator = FibonacciCalculator()
@@ -48,6 +48,8 @@ def test_nth_fibonacci_for_0_is_0():
 ```
 
 This is a basic test. We define the test method as a method prefixed with `test_`. The test method name gives us a good indication of our expectation. It's not a complete test suite, but it is one individual test that makes sense to us.
+
+We've also set upt the test code using the `arrange-act-assert` sequence. We arrange by setting up the system under test (SUT) - in this case, the `FibonacciCalculator` class. We act by calling the `Nth` method with a sepecific input, and we assert by comparing the result with the expected value for the input.
 
 Let's run the tests:
 ```
@@ -78,27 +80,27 @@ FAILED tests/test_fibonacci.py::test_nth_fibonacci_for_0_is_0 - NameError: name 
 ============================================================================================================================ 1 failed in 0.17s ============================================================================================================================
 ```
 
-Tests are RED. We've got errors as expected, sincve we are excercising a class and method we haven't yet implemented. That's our first sign of what we need to do, so let's get to work on that.
+Tests are RED. We've got errors as expected, since we are excercising a class and method we haven't yet implemented. That's our first sign of what we need to do. Also pytest output also helps by telling us `NameError: name 'FibonacciCalculator' is not defined`. Let's get to work on that.
 
 ### Create the fibonacci class
 
-Create the Fibonacci class file at `src/finbonacci.py` and fill it with the minimal implementation that coudl pass the test:
+Create the Fibonacci class file at `src/finbonacci.py` and fill it with the minimal implementation that could pass the test:
 
-```
+```python
 class FibonacciCalculator():
     def Nth(self, ordinal):
         return 0
 ```
 
-test test file will need to import the class so add the missing header in the test file:
+Our test file will need to import the class so add the missing header in the test file:
 
-```
+```python
 from src.fibonacci import FibonacciCalculator
 
 (...)
 ```
 
-And run the tests with `pytest tests/`: 
+And run the test with `pytest tests/` in the terminal: 
 
 ```
 =========================================================================================================================== test session starts ===========================================================================================================================
@@ -112,7 +114,7 @@ tests\test_fibonacci.py .                                                       
 ============================================================================================================================ 1 passed in 0.07s ============================================================================================================================
 ```
 
-Tests are now green! We've got our first test in and one of the conditions - 0th index returns 0 - is implemented (event though it is not the complete solution).
+Tests are now green! We've got our first test in and one of the conditions - 0th index returns 0 - is implemented (even though it is not the complete solution).
 
 Time to commit!
 
@@ -120,7 +122,7 @@ Time to commit!
 
 There is another test condition that is not based on a sum - the value with an index of 1. Let's test and implement that case. In the test file, add a new test method:
 
-```
+```python
 def test_nth_fibonacci_for_1_is_1():
     calculator = FibonacciCalculator()
     result = calculator.Nth(1)
@@ -153,10 +155,10 @@ FAILED tests/test_fibonacci.py::test_nth_fibonacci_for_1_is_1 - assert 0 == 1
 ======================================================================================================================= 1 failed, 1 passed in 0.26s =======================================================================================================================
 ```
 
-Of the 2 tests, one is failing, as expected, since we haven't implemented a complete fibonacci, and the current one only covers the 0 index. Let's make this one pass. Modify the implementation using a simple implementation based on ifs:
+Of the 2 tests, one is failing, as expected, since we haven't implemented a complete fibonacci, and the current one only covers the 0 index. Let's make this one pass. Modify the implementation using a simple implementation based on `if`s:
 
 
-```
+```python
 class FibonacciCalculator():
     def Nth(self, ordinal):
         if ordinal == 1:
@@ -166,20 +168,20 @@ class FibonacciCalculator():
 
 And run the tests again. They now pass! Time for a new commit.
 
-## index 2 requires the sum
+## Index 2 requires the sum
 
 Add the next test:
 
-```
+```python
 def test_nth_fibonacci_for_2_is_1():
     calculator = FibonacciCalculator()
     result = calculator.Nth(2)
     assert result == 1
 ```
  
- And run to confirm the failure. It's important to have a failure when we start since we know we haven't covered the case. By having a failure at this point, we know our test is valid.  The counter axample would be to imagine that our fibonacci implementation were the following:
+ And run to confirm the failure. It's important to have a failure when we start since we know we haven't covered the case. By having a failure at this point, we know our test is valid.  The counter example would be to imagine that our fibonacci implementation were the following:
 
- ``` 
+ ```python
  class FibonacciCalculator():
     def Nth(self, ordinal):
         if ordinal == 0:
@@ -187,11 +189,11 @@ def test_nth_fibonacci_for_2_is_1():
         return 1
 ```
 
-This code would pass on all the tests, even though the implementation for 2 would be incorrect, as it is not summing. It would be a false positive. We should always look into having a failing test to be sure the test is valid.
+This code would pass on all the tests, even though the implementation for 2 could be incorrect, as it is not using the sum operation as we'd expect. It could be a false positive. We should always look into having a failing test to be sure the test is valid.
 
-let's implement the case as we wan't it:
+Let's implement the case as we want it:
 
-```
+```python
 class FibonacciCalculator():
     def Nth(self, ordinal):
         if ordinal == 0:
@@ -202,16 +204,16 @@ class FibonacciCalculator():
 
 ```
 
-And run the tests. All passes. Let's add an extra test on a higher number since we are aware of the false positive.:
+And run the tests. All tests pass. Let's add an extra test on a higher number since we are aware of the false positive:
 
-```
+```python
 def test_nth_fibonacci_for_10_is_55():
     calculator = FibonacciCalculator()
     result = calculator.Nth(10)
     assert result == 55
 ```
 
-runnning the tests we have 4 tests covering a good amount. Lets check on coverage, too:
+Runnning the tests we have 4 tests covering a good amount. Lets check on coverage, too:
 
 ```
 pytest --cov-report term-missing --cov=src tests/
@@ -244,25 +246,25 @@ Time to commit!
 
 ## Time to Refactor
 
-We've got working code and working tests, but that doesn't mean the jobe is done. We should look into cleaning up and refactoring what we've done. The big advantage is that since we now have tests in place, we can make changes and understand if we've broken something.
+We've got working code and working tests, but that doesn't mean the job is done. We should look into cleaning up and refactoring what we've done. The big advantage is that since we now have tests in place, we can make changes and understand if we've broken something.
 
 ### Idiomatic python - method name.
 
-As a C# developer, I'm used to seeing capitilized method names. In Python, seems there is a preference for lowercased names. Let's refactor that. 
+As a C# developer, I'm used to seeing capitalized method names. In Python, seems there is a preference for lowercased names. Let's refactor that. 
 
 In the `fibonacci.py` file, using VScode, place the cursor on the `Nth` method name and hit F2. Rename the method to `nth` (lover-case n).
 
-Since we've made a change (even a simple one with the help of the IDE), let's run the tests to make sure everything is ok.
+Since we've made a change (even a simple one with the help of the IDE), let's run the tests to make sure everything is ok. Because the change affects multiple parts of the code and files, there was a risk of making a mistake and not realizin it. With tests we get near imediate feedback on that.
 
-In my case, because I didn't also save the test file on the refactor, tests failed. Save it, rerun tests, everything now OK.
+In my case, because I didn't also save the test file on the refactor, tests failed. Save it, rerun tests, everything now OK. 
 
 Commit!
 
-### Idiomatic python - if sequence.
+### Ugly if sequence.
 
 Looking at the `nth` method, the `if` sequence looks kind of horrible. First 2 cases are really only about the fixed values, and are the same as the input argument. Let's clean it up:
 
-```
+```python
 class FibonacciCalculator():
     def nth(self, ordinal):
         if ordinal <= 1:
@@ -270,17 +272,17 @@ class FibonacciCalculator():
         return self.nth(ordinal-1) + self.nth(ordinal-2)
 ```
 
-Save. Rerun. Everythinf still works as expected.
+Save. Rerun. Everything still works as expected.
 
 Commit!
 
-### Idiomatic pytest - DRY
+### DRY Tests
 
 DRY is an interesting principle, and in the case of the test file, it's clearly being violated. We are doing the same setup and verification, only changing the input argument to the `nth` method and the value we are checking against. The pytest library allows us to reuse the test method logic and parameterize the test.
 
 Let's add a new parametrized test to the code, before changing any of the original ones. We'll also need to import the pytest namespace:
 
-```
+```python
 import pytest
 
 (...)
@@ -299,13 +301,13 @@ def test_fibonacci_for_index_is_expected_value(ordinal, expected):
 	
 ```
 
-Run the test. All passes. The the abouve test, we have the same arrange-act-assert sequence, but now the input to the test method is injected therough the defined parameters. Pytest is really running 9 tests now - teh 4 original test methods and 5 copies of the new one, one per parameter pair.
+Run the test. All tests pass. The the above test, we have the same arrange-act-assert sequence, but now the input to the test method is injected through the defined parameters. Pytest is really running 9 tests now - the 4 original test methods and 5 copies of the new one, one per parameter pair.
 
 Since we no longer need the original 4 as they are a part of this new test, we can simply delete them, reducing the amount of code we'll have to maintain in the future.
 
 The test file should now look like this:
 
-```
+```python
 from src.fibonacci import FibonacciCalculator
 import pytest
 
@@ -322,7 +324,7 @@ def test_fibonacci_for_index_is_expected_value(ordinal, expected):
     assert result == expected
 ```
 
-and running the tests , with coverage, should still show 100% coverage:
+and running the tests, with coverage, should still show 100% coverage:
 
 ```
 ======================================================================================================================= test session starts ========================================================================================================================
@@ -351,11 +353,11 @@ Commit!
 
 You're satisfied and considered the case complete, submitted it to code review, and a colleague noticed one case not covered - the `nth` method allows for a negative input, and we can't calculate the value at a negative index.
 
-You discuss what the best approach is, and as a team, decided on using an exception, more specificly, a `ValueError` which is appropriate for an argument out of a valid range, . Pytest allows you to check exceptions using the `pytest.raises` context manager.
+You discuss what the best approach is, and as a team, decided on using an exception, more specificly, a `ValueError` which is appropriate for an argument out of a valid range. Pytest allows you to check exceptions using the `pytest.raises` context manager.
 
 Let's add a test to confirm our code's behavior:
 
-```
+```python
 def test_fibonacci_raises_exception_for_negative_ordinal():
     with pytest.raises(ValueError):
         FibonacciCalculator().nth(-1)
@@ -399,7 +401,7 @@ Notice the test failed since it did not raise the expected exception (since we h
 
 Let's change our code the throw when expected to:
 
-```
+```python
 class FibonacciCalculator():
     def nth(self, ordinal):
         if ordinal < 0:
