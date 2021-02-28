@@ -166,9 +166,81 @@ class FibonacciCalculator():
 
 And run the tests again. They now pass! Time for a new commit.
 
+## index 2 requires the sum
+
+Add the next test:
+
+```
+def test_nth_fibonacci_for_2_is_1():
+    calculator = FibonacciCalculator()
+    result = calculator.Nth(2)
+    assert result == 1
+```
+ 
+ And run to confirm the failure. It's important to have a failure when we start since we know we haven't covered the case. By having a failure at this point, we know our test is valid.  The counter axample would be to imagine that our fibonacci implementation were the following:
+
+ ``` 
+ class FibonacciCalculator():
+    def Nth(self, ordinal):
+        if ordinal == 0:
+            return 0
+        return 1
+```
+
+This code would pass on all the tests, even though the implementation for 2 would be incorrect, as it is not summing. It would be a false positive. We should always look into having a failing test to be sure the test is valid.
+
+let's implement the case as we wan't it:
+
+```
+class FibonacciCalculator():
+    def Nth(self, ordinal):
+        if ordinal == 0:
+            return 0
+        if ordinal == 1:
+            return 1
+        return self.Nth(ordinal-1) + self.Nth(ordinal-2)
+
+```
+
+And run the tests. All passes. Let's add an extra test on a higher number since we are aware of the false positive.:
+
+```
+def test_nth_fibonacci_for_10_is_55():
+    calculator = FibonacciCalculator()
+    result = calculator.Nth(10)
+    assert result == 55
+```
+
+runnning the tests we have 4 tests covering a good amount. Lets check on coverage, too:
+
+```
+pytest --cov-report term-missing --cov=src tests/
+```
+
+```
+=========================================================================================================================== test session starts ===========================================================================================================================
+platform win32 -- Python 3.9.2, pytest-6.2.2, py-1.10.0, pluggy-0.13.1
+rootdir: C:\gh\pyFibonacci
+plugins: cov-2.11.1
+collected 4 items                                                                                                                                                                                                                                                          
+
+tests\test_fibonacci.py ....                                                                                                                                                                                                                                         [100%]
+
+----------- coverage: platform win32, python 3.9.2-final-0 -----------
+Name               Stmts   Miss  Cover   Missing
+------------------------------------------------
+src\__init__.py        0      0   100%
+src\fibonacci.py       7      0   100%
+------------------------------------------------
+TOTAL                  7      0   100%
 
 
+============================================================================================================================ 4 passed in 0.25s ============================================================================================================================
+```
 
+We've got 100% code coverage meaning every single production code line is hit at least once in the test suite. We're exercising all our code (but not necessarily every possible case).
+
+Time to commit!
 
 
 
