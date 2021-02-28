@@ -1,24 +1,14 @@
 from src.fibonacci import FibonacciCalculator
+import pytest
 
-def test_nth_fibonacci_for_0_is_0():
-    #arrange
+@pytest.mark.parametrize("ordinal, expected", [
+    (0, 0), 
+    (1, 1), 
+    (2, 1),
+    (3, 2),
+    (10,55)
+])
+def test_fibonacci_for_index_is_expected_value(ordinal, expected):
     calculator = FibonacciCalculator()
-    #act
-    result = calculator.nth(0)
-    #assert
-    assert result == 0
-
-def test_nth_fibonacci_for_1_is_1():
-    calculator = FibonacciCalculator()
-    result = calculator.nth(1)
-    assert result == 1
-
-def test_nth_fibonacci_for_2_is_1():
-    calculator = FibonacciCalculator()
-    result = calculator.nth(2)
-    assert result == 1
-
-def test_nth_fibonacci_for_10_is_55():
-    calculator = FibonacciCalculator()
-    result = calculator.nth(10)
-    assert result == 55
+    result = calculator.nth(ordinal)
+    assert result == expected

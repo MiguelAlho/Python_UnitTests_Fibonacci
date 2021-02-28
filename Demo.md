@@ -274,6 +274,78 @@ Save. Rerun. Everythinf still works as expected.
 
 Commit!
 
+### Idiomatic pytest - DRY
+
+DRY is an interesting principle, and in the case of the test file, it's clearly being violated. We are doing the same setup and verification, only changing the input argument to the `nth` method and the value we are checking against. The pytest library allows us to reuse the test method logic and parameterize the test.
+
+Let's add a new parametrized test to the code, before changing any of the original ones. We'll also need to import the pytest namespace:
+
+```
+import pytest
+
+(...)
+
+@pytest.mark.parametrize("ordinal,expected", [
+    (0, 0), 
+    (1, 1), 
+    (2, 1),
+    (3, 2),
+    (10,55)
+])
+def test_fibonacci_for_index_is_expected_value(ordinal, expected):
+    calculator = FibonacciCalculator()
+    result = calculator.nth(ordinal)
+    assert result == expected
+	
+```
+
+Run the test. All passes. The the abouve test, we have the same arrange-act-assert sequence, but now the input to the test method is injected therough the defined parameters. Pytest is really running 9 tests now - teh 4 original test methods and 5 copies of the new one, one per parameter pair.
+
+Since we no longer need the original 4 as they are a part of this new test, we can simply delete them, reducing the amount of code we'll have to maintain in the future.
+
+The test file should now look like this:
+
+```
+from src.fibonacci import FibonacciCalculator
+import pytest
+
+@pytest.mark.parametrize("ordinal, expected", [
+    (0, 0), 
+    (1, 1), 
+    (2, 1),
+    (3, 2),
+    (10,55)
+])
+def test_fibonacci_for_index_is_expected_value(ordinal, expected):
+    calculator = FibonacciCalculator()
+    result = calculator.nth(ordinal)
+    assert result == expected
+```
+
+and running the tests , with coverage, should still show 100% coverage:
+
+```
+======================================================================================================================= test session starts ========================================================================================================================
+platform win32 -- Python 3.9.2, pytest-6.2.2, py-1.10.0, pluggy-0.13.1
+rootdir: C:\gh\pyFibonacci
+plugins: cov-2.11.1
+collected 5 items                                                                                                                                                                                                                                                   
+
+tests\test_fibonacci.py .....                                                                                                                                                                                                                                 [100%]
+
+----------- coverage: platform win32, python 3.9.2-final-0 -----------
+Name               Stmts   Miss  Cover   Missing
+------------------------------------------------
+src\__init__.py        0      0   100%
+src\fibonacci.py       5      0   100%
+------------------------------------------------
+TOTAL                  5      0   100%
+
+
+======================================================================================================================== 5 passed in 0.23s =========================================================================================================================
+```
+
+Commit!
 
 
 
