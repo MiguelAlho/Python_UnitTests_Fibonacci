@@ -347,8 +347,70 @@ TOTAL                  5      0   100%
 
 Commit!
 
+### Idiomatic pytest - Exceptions
 
+You're satisfied and considered the case complete, submitted it to code review, and a colleague noticed one case not covered - the `nth` method allows for a negative input, and we can't calculate the value at a negative index.
 
+You discuss what the best approach is, and as a team, decided on using an exception, more specificly, a `ValueError` which is appropriate for an argument out of a valid range, . Pytest allows you to check exceptions using the `pytest.raises` context manager.
 
+Let's add a test to confirm our code's behavior:
 
+```
+def test_fibonacci_raises_exception_for_negative_ordinal():
+    with pytest.raises(ValueError):
+        FibonacciCalculator().nth(-1)
+```
+
+Save and run the test, to get:
+
+```
+======================================================================================================================= test session starts ========================================================================================================================
+platform win32 -- Python 3.9.2, pytest-6.2.2, py-1.10.0, pluggy-0.13.1
+rootdir: C:\gh\pyFibonacci
+plugins: cov-2.11.1
+collected 6 items                                                                                                                                                                                                                                                   
+
+tests\test_fibonacci.py .....F                                                                                                                                                                                                                                [100%]
+
+============================================================================================================================= FAILURES =============================================================================================================================
+_______________________________________________________________________________________________________ test_fibonacci_raises_exception_for_negative_ordinal _______________________________________________________________________________________________________
+
+    def test_fibonacci_raises_exception_for_negative_ordinal():
+        with pytest.raises(ValueError):
+>           FibonacciCalculator().nth(-1)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests\test_fibonacci.py:18: Failed
+
+----------- coverage: platform win32, python 3.9.2-final-0 -----------
+Name               Stmts   Miss  Cover   Missing
+------------------------------------------------
+src\__init__.py        0      0   100%
+src\fibonacci.py       5      0   100%
+------------------------------------------------
+TOTAL                  5      0   100%
+
+===================================================================================================================== short test summary info ======================================================================================================================
+FAILED tests/test_fibonacci.py::test_fibonacci_raises_exception_for_negative_ordinal - Failed: DID NOT RAISE <class 'ValueError'>
+=================================================================================================================== 1 failed, 5 passed in 0.25s ====================================================================================================================
+```
+
+Notice the test failed since it did not raise the expected exception (since we haven't implemented that case).
+
+Let's change our code the throw when expected to:
+
+```
+class FibonacciCalculator():
+    def nth(self, ordinal):
+        if ordinal < 0:
+            raise ValueError("ordinal must be a positive integer")
+        
+        if ordinal <= 1:
+            return ordinal
+        return self.nth(ordinal-1) + self.nth(ordinal-2)
+```
+
+Rerun the test and all tests pass. Our code just got a bit more robust, and the tests tell us clearly what we expect in all the cases.
+
+Time to commit!
 
