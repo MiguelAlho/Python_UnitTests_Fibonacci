@@ -1,0 +1,6 @@
+.coverage
+backup/*
+.vscode
+.pytest_cache
+
+
