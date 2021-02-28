@@ -258,6 +258,24 @@ In my case, because I didn't also save the test file on the refactor, tests fail
 
 Commit!
 
+### Idiomatic python - if sequence.
+
+Looking at the `nth` method, the `if` sequence looks kind of horrible. First 2 cases are really only about the fixed values, and are the same as the input argument. Let's clean it up:
+
+```
+class FibonacciCalculator():
+    def nth(self, ordinal):
+        if ordinal <= 1:
+            return ordinal
+        return self.nth(ordinal-1) + self.nth(ordinal-2)
+```
+
+Save. Rerun. Everythinf still works as expected.
+
+Commit!
+
+
+
 
 
 
